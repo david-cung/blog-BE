@@ -6,46 +6,44 @@ import {
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
-} from 'typeorm'
-import { Exclude, Expose } from 'class-transformer'
+} from "typeorm";
+import { Exclude, Expose } from "class-transformer";
 
-@Entity({ name: 'users' })
+@Entity({ name: "users" })
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
-  @Unique(['email'])
+  @Unique(["email"])
   @Column()
-  email: string
+  email: string;
 
   @Column()
-  userName: string
-
-  @Exclude()
-  @Column()
-  password: string
+  userName: string;
 
   @Exclude()
   @Column()
-  photoURL: string
+  password: string;
+
+  @Exclude()
+  @Column()
+  photoURL: string;
 
   @Column({ default: true })
-  isActive: boolean
+  isActive: boolean;
 
   @CreateDateColumn({
-    default: `now()`,
     nullable: true,
   })
-  createdAt: string
+  createdAt: string;
 
   @UpdateDateColumn({
-    default: `now()`,
     nullable: true,
   })
-  updatedAt: string
+  updatedAt: string;
 
   constructor(partial: Partial<User>) {
-    super()
-    Object.assign(this, partial)
+    super();
+    Object.assign(this, partial);
   }
 }
