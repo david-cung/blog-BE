@@ -1,19 +1,30 @@
-import { Injectable } from '@nestjs/common'
-import { CreatePostDto } from './dto/create-post.dto'
+import { Injectable } from "@nestjs/common";
+import { v4 as uuidv4 } from "uuid";
+import { CreatePostDto } from "./dto/create-post.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Post } from "./../entity/post.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class PostsService {
+  constructor(
+    @InjectRepository(Post)
+    private readonly postRepository: Repository<Post>
+  ) {}
+
   async getAllPosts() {
     // Implement your logic to fetch all posts
-    return []
+    return [];
   }
 
   async getPostById(id: number) {
     // Implement your logic to fetch a single post by ID
-    return null
+    return null;
   }
 
   async createPost(postData: CreatePostDto): Promise<any> {
-    return null
+    const id = uuidv4();
+    const data = await this.postRepository.insert({ ...postData, id });
+    return id;
   }
 }

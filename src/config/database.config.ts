@@ -1,11 +1,20 @@
+import { registerAs } from "@nestjs/config";
 import * as dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
-export default (): Record<string, any> => ({
-  databaseConnection: process.env.DATABASE_CONNECTION || "mysql",
-  databaseHost: process.env.DATABASE_HOST,
-  databasePort: parseInt(process.env.DATABASE_PORT, 10) || 3306,
-  databaseUsername: process.env.DATABASE_USERNAME,
-  databasePassword: process.env.DATABASE_PASSWORD,
-  databaseName: process.env.DATABASE_DB_NAME,
-});
+export default registerAs("db", () => ({
+  host: process.env.DATABASE_HOST,
+  type: "mysql",
+  port: +process.env.DATABASE_PORT,
+  username: process.env.DATABASE_USERNAME,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_DB_NAME,
+  timezone: "Z",
+  logging: process.env.ORM_LOGGING === "true",
+  autoLoadEntities: true,
+  keepConnectionAlive: true,
+  entities: [`${__dirname}/**/*.entity{.ts,.js}`],
+  extra: {
+    connectionLimit: parseInt(process.env.ORM_CONNECTION_LIMIT || "10", 10),
+  },
+}));

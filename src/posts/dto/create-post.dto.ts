@@ -1,20 +1,24 @@
-import { IsEmail, IsNotEmpty, Length, Validate } from 'class-validator'
-import { UniqueEmailValidator } from '@validators/unique-email.validator'
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreatePostDto {
   @IsNotEmpty()
-  @IsEmail()
-  @Validate(UniqueEmailValidator)
-  email: string
+  @IsNumber()
+  userId: number;
 
   @IsNotEmpty()
-  userName: string
+  @IsString()
+  content: string;
 
   @IsNotEmpty()
-  @Length(8, 24)
-  password: string
+  @IsString()
+  title: string;
 
-  @IsNotEmpty()
-  @Length(8, 100000)
-  photoUrl: string
+  @IsString()
+  image: string;
+
+  @IsString()
+  category: string;
+
+  @IsString()
+  slug: string;
 }
