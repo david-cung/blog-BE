@@ -1,20 +1,28 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { UUID } from "typeorm/driver/mongodb/bson.typings";
+import { User } from "./user.entity";
 
 @Entity({ name: "posts" })
 export class Post extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
-  userId: number;
+  @Column({ type: "varchar", length: 36 })
+  userId: string;
 
-  @Column()
+  @Column({ type: "varchar", length: 10000 })
   content: string;
 
-  @Column()
+  @Column({ type: "varchar", length: 1000 })
   title: string;
 
-  @Column()
+  @Column({ type: "varchar" })
   image: string;
 
   @Column({ default: "Uncategorized" })
@@ -22,6 +30,9 @@ export class Post extends BaseEntity {
 
   @Column()
   slug: string;
+
+  @ManyToOne(() => User)
+  user!: User;
 
   constructor(partial: Partial<Post>) {
     super();

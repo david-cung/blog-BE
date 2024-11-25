@@ -3,11 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
 } from "typeorm";
 import { Exclude, Expose } from "class-transformer";
+import { Post } from "./post.entity";
 
 @Entity({ name: "users" })
 export class User extends BaseEntity {
@@ -39,6 +41,12 @@ export class User extends BaseEntity {
     nullable: true,
   })
   updatedAt: string;
+
+  @OneToMany(
+    () => Post,
+    (post) => post.userId
+  )
+  post?: Post;
 
   constructor(partial: Partial<User>) {
     super();

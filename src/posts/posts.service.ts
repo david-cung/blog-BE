@@ -22,9 +22,9 @@ export class PostsService {
     return null;
   }
 
-  async createPost(postData: CreatePostDto): Promise<any> {
+  async createPost(userId: string, postData: CreatePostDto): Promise<any> {
     const id = uuidv4();
-    await this.postRepository.insert({ ...postData, id });
+    await this.postRepository.insert({ ...postData, userId, id });
     return id;
   }
 }

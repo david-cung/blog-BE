@@ -28,9 +28,12 @@ export class AuthService {
     }
 
     return {
-      accessToken: await this.jwtService.signAsync(data, {
-        expiresIn: this.configService.get<string>("jwtExpiresIn"),
-      }),
+      accessToken: await this.jwtService.signAsync(
+        { email, userId: user.id },
+        {
+          expiresIn: this.configService.get<string>("jwtExpiresIn"),
+        }
+      ),
     };
   }
 

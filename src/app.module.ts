@@ -11,6 +11,7 @@ import { PostsModule } from "./posts/posts.module";
 import { PostsService } from "./posts/posts.service";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import configurations from "./config";
+import { JwtModule } from "@nestjs/jwt";
 const { NODE_ENV } = process.env;
 
 @Module({
