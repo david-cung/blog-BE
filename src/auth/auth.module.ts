@@ -7,13 +7,15 @@ import { LocalStrategy } from "./strategies/local.strategy";
 import { JwtModule } from "@nestjs/jwt";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { User } from "../../src/entity/user.entity";
 
 @Module({
   imports: [
     UserHttpModule,
     PassportModule,
     JwtModule.registerAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule, TypeOrmModule.forFeature([User])],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>("jwtSecretKey"),
         signOptions: { expiresIn: "1h" },

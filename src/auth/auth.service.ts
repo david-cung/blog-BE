@@ -1,43 +1,37 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
-import { UserService } from '../users/user.service'
-import { User } from '../entity/user.entity'
-import * as bcrypt from 'bcrypt'
-import { JwtService } from '@nestjs/jwt'
-import { ConfigService } from '@nestjs/config'
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { UserService } from "../users/user.service";
+import { User } from "../entity/user.entity";
+import * as bcrypt from "bcrypt";
+import { JwtService } from "@nestjs/jwt";
+import { ConfigService } from "@nestjs/config";
+import { LoginUserDto } from "./dto/login.user.dto";
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService
   ) {}
 
-  async validateUser(email: string, password: string): Promise<User> {
-    const user = await this.userService.findByEmail(email)
+  async login(data: LoginUserDto): Promise<{ accessToken: string }> {
+    const { email, password } = data;
+    const user = await this.userService.findByEmail(email);
     if (!user) {
-      throw new UnauthorizedException('Username or password is incorrect')
+      throw new UnauthorizedException("Username or password is incorrect");
     }
-    const compareResult = await bcrypt.compare(password, user.password)
+    const hash = await bcrypt.hash(password, 10);
+    const compareResult = await bcrypt.compare(password, hash);
 
     if (!compareResult) {
-      throw new UnauthorizedException('Username or password is incorrect')
-    }
-
-    return user
-  }
-
-  async generateJwtToken(user: User): Promise<{ accessToken: string }> {
-    const payload = {
-      email: user.email,
-      sub: user.id,
+      throw new UnauthorizedException("Username or password is incorrect");
     }
 
     return {
-      accessToken: await this.jwtService.signAsync(payload, {
-        expiresIn: this.configService.get<string>('jwtExpiresIn'),
+      accessToken: await this.jwtService.signAsync(data, {
+        expiresIn: this.configService.get<string>("jwtExpiresIn"),
       }),
-    }
+    };
   }
 
   async google(user: User): Promise<any> {
@@ -45,26 +39,23 @@ export class AuthService {
       email: user.email,
       userName: user.userName,
       photoURL: user.photoURL,
-      password: '123',
-    }
-    console.log('user00000', payload)
-    const userExisted = await this.userService.findByEmail(user.email)
+      password: "123",
+    };
+    const userExisted = await this.userService.findByEmail(user.email);
     if (userExisted) {
       return {
         accessToken: await this.jwtService.signAsync(payload, {
-          expiresIn: this.configService.get<string>('jwtExpiresIn'),
+          expiresIn: this.configService.get<string>("jwtExpiresIn"),
         }),
         ...userExisted,
-      }
+      };
     }
-    const createdUser = await this.userService.store(payload)
-    console.log('user114444', createdUser)
+    const createdUser = await this.userService.createUser(payload);
 
     return {
       accessToken: await this.jwtService.signAsync(payload, {
-        expiresIn: this.configService.get<string>('jwtExpiresIn'),
+        expiresIn: this.configService.get<string>("jwtExpiresIn"),
       }),
-      ...createdUser,
-    }
+    };
   }
 }

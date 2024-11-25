@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { v4 as uuidv4 } from "uuid";
 import { CreatePostDto } from "./dto/create-post.dto";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Post } from "./../entity/post.entity";
+import { Post } from "../entity/post.entity";
 import { Repository } from "typeorm";
 
 @Injectable()
@@ -24,7 +24,7 @@ export class PostsService {
 
   async createPost(postData: CreatePostDto): Promise<any> {
     const id = uuidv4();
-    const data = await this.postRepository.insert({ ...postData, id });
+    await this.postRepository.insert({ ...postData, id });
     return id;
   }
 }

@@ -11,8 +11,8 @@ import { Exclude, Expose } from "class-transformer";
 
 @Entity({ name: "users" })
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Unique(["email"])
   @Column()
@@ -21,12 +21,10 @@ export class User extends BaseEntity {
   @Column()
   userName: string;
 
-  @Exclude()
-  @Column()
+  @Column({ type: "varchar", nullable: true, length: 10000 })
   password: string;
 
-  @Exclude()
-  @Column()
+  @Column({ type: "varchar", nullable: true })
   photoURL: string;
 
   @Column({ default: true })

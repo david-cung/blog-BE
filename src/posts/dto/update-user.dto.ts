@@ -4,23 +4,22 @@ import {
   IsOptional,
   Length,
   Validate,
-} from 'class-validator'
-import { UniqueEmailValidator } from '@validators/unique-email.validator'
+} from "class-validator";
+import { UniqueEmailValidator } from "@validators/unique-email.validator";
 
 export class UpdateUserDto {
   @IsOptional()
   @IsEmail()
-  @Validate(UniqueEmailValidator)
-  email: string
+  email: string;
 
   @IsOptional()
-  userName: string
+  userName: string;
 
   @IsOptional()
   @Length(8, 24)
-  password: string
+  password: string;
 
   @IsOptional()
   @Length(8, 100000)
-  photoURL: string
+  photoURL: string;
 }

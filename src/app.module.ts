@@ -5,7 +5,6 @@ import { AllExceptionFilter } from "./filter/exception.filter";
 import appConfig from "@config/app.config";
 import authConfig from "@config/auth.config";
 import { LoggerModule } from "./logger/logger.module";
-import { UserHttpModule } from "./users/user-http.module";
 import { AuthModule } from "./auth/auth.module";
 import { ValidatorModule } from "@validators/validator.module";
 import { PostsModule } from "./posts/posts.module";
@@ -28,7 +27,6 @@ const { NODE_ENV } = process.env;
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => {
         const config = configService.get<TypeOrmModuleOptions>("db");
-        console.log(config);
         if (!config) {
           throw new Error("Cannot start app without ORM config");
         }
@@ -37,7 +35,6 @@ const { NODE_ENV } = process.env;
       inject: [ConfigService],
     }),
     LoggerModule,
-    UserHttpModule,
     AuthModule,
     ValidatorModule,
     PostsModule,
