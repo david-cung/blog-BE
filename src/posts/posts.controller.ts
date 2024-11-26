@@ -12,9 +12,9 @@ export class PostsController {
 
   @Post()
   createPost(
-    @User("id") user: AuthenticatedUser,
+    @User() user: AuthenticatedUser,
     @Body() postData: CreatePostDto
-  ): Promise<any> {
+  ): Promise<string> {
     return this.postsService.createPost(user.userId, postData);
   }
 }

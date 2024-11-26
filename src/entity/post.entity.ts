@@ -22,13 +22,13 @@ export class Post extends BaseEntity {
   @Column({ type: "varchar", length: 1000 })
   title: string;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar", nullable: true })
   image: string;
 
   @Column({ default: "Uncategorized" })
   category: string;
 
-  @Column()
+  @Column({ type: "varchar", nullable: true })
   slug: string;
 
   @ManyToOne(() => User)

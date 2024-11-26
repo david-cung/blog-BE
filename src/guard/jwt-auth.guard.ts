@@ -17,12 +17,16 @@ export class JwtAuthGuard implements CanActivate {
     if (!token) {
       throw new UnauthorizedException("Token not found");
     }
-
+    console.log("token", token);
     try {
       const decoded = this.jwtService.verify(token, {
         secret: process.env.JWT_SECRET_KEY,
       });
+      console.log("token1232131231", decoded);
+
       request.user = decoded;
+      console.log("12313123123123123123123412312", token);
+
       return true;
     } catch (err) {
       throw new UnauthorizedException("Invalid token");

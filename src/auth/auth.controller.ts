@@ -21,7 +21,6 @@ export class AuthController {
 
   @Post("/login")
   login(@Body() data: LoginUserDto): Promise<{ accessToken: string }> {
-    console.log("data", data);
     return this.authService.login(data);
   }
 
