@@ -11,13 +11,11 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "paths": {
-      "@config/*": [
-        "src/config/*"
-      ],
-      "@validators/*": [
-        "src/validators/*"
-      ]
+      "@config/*": ["src/config/*"],
+      "@validators/*": ["src/validators/*"]
     }
   }
 }

@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: nestjs-app
+    env: node
+    region: singapore
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    envVars:
+      NODE_ENV: production
+      DATABASE_URL: your-database-url
