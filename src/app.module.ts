@@ -25,15 +25,11 @@ const { NODE_ENV } = process.env;
       isGlobal: true,
       envFilePath: [`.env${NODE_ENV ? `.${NODE_ENV}` : ""}`],
     }),
-    TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) => {
-        const config = configService.get<TypeOrmModuleOptions>("db");
-        if (!config) {
-          throw new Error("Cannot start app without ORM config");
-        }
-        return config;
-      },
-      inject: [ConfigService],
+    TypeOrmModule.forRoot({
+      type: "postgres",
+      url: process.env.DATABASE_URL,
+      autoLoadEntities: true, // Tự động load các entity
+      synchronize: true, // Không nên bật trong môi trường production
     }),
     LoggerModule,
     AuthModule,
